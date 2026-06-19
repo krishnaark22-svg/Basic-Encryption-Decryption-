@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Caesar Cipher</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 50px;
+            background: #0f172a;
+            color: white;
+        }
+
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #22c55e;
+        }
+    </style>
+</head>
+<body>
+
+<h1>🔐 Caesar Cipher Tool</h1>
+
+<input type="text" id="text" placeholder="Enter text"><br>
+<input type="number" id="shift" placeholder="Enter shift key"><br>
+
+<button onclick="encrypt()">Encrypt</button>
+<button onclick="decrypt()">Decrypt</button>
+
+<div id="result"></div>
+
+<script>
+async function encrypt() {
+    let text = document.getElementById("text").value;
+    let shift = document.getElementById("shift").value;
+
+    let response = await fetch("http://127.0.0.1:5000/encrypt", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text: text, shift: shift})
+    });
+
+    let data = await response.json();
+    document.getElementById("result").innerText = "Encrypted: " + data.result;
+}
+
+async function decrypt() {
+    let text = document.getElementById("text").value;
+    let shift = document.getElementById("shift").value;
+
+    let response = await fetch("http://127.0.0.1:5000/decrypt", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({text: text, shift: shift})
+    });
+
+    let data = await response.json();
+    document.getElementById("result").innerText = "Decrypted: " + data.result;
+}
+</script>
+
+</body>
+</html>
